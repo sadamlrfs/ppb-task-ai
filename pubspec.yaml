@@ -44,6 +44,9 @@ dependencies:
   # Speech to text
   speech_to_text: ^7.0.0
 
+  # AI - Google Gemini (free tier: gemini-1.5-flash)
+  google_generative_ai: ^0.4.6
+
   # Cloudinary upload
   http: ^1.2.0
   crypto: ^3.0.3
