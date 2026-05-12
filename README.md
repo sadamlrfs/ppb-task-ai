@@ -1,6 +1,6 @@
 # PPB TASK INTEGRATION AI
 
-GEMINI API KEY 
+GEMMA OCR MODEL + GEMINI API KEY 
 
 Notes Summarize
 <img width="720" height="1600" alt="image" src="https://github.com/user-attachments/assets/bab5d728-cad8-41ab-8af3-429cfd0fe854" />
