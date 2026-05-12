@@ -4,10 +4,9 @@ class BimbinganModel {
   final String id;
   final String thesisId;
   final String title;
-  final String plan; // optional agenda
+  final String plan;
   final DateTime date;
   final DateTime createdAt;
-
   const BimbinganModel({
     required this.id,
     required this.thesisId,
@@ -16,7 +15,6 @@ class BimbinganModel {
     required this.date,
     required this.createdAt,
   });
-
   factory BimbinganModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return BimbinganModel(
@@ -28,7 +26,6 @@ class BimbinganModel {
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'thesisId': thesisId,
         'title': title,
@@ -36,7 +33,6 @@ class BimbinganModel {
         'date': Timestamp.fromDate(date),
         'createdAt': Timestamp.fromDate(createdAt),
       };
-
   BimbinganModel copyWith({String? title, String? plan, DateTime? date}) =>
       BimbinganModel(
         id: id,

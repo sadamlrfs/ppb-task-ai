@@ -4,16 +4,13 @@ import '../services/auth_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final AuthService _service = AuthService();
-
   UserModel? _user;
   bool _loading = false;
   String? _error;
-
   UserModel? get user => _user;
   bool get loading => _loading;
   String? get error => _error;
   bool get isLoggedIn => _user != null;
-
   Future<void> loadCurrentUser() async {
     _user = await _service.fetchCurrentUser();
     notifyListeners();
@@ -87,14 +84,19 @@ class AuthProvider extends ChangeNotifier {
   }
 
   String _friendlyError(String raw) {
-    if (raw.contains('user-not-found') || raw.contains('wrong-password') || raw.contains('invalid-credential')) {
+    if (raw.contains('user-not-found') ||
+        raw.contains('wrong-password') ||
+        raw.contains('invalid-credential')) {
       return 'Invalid email or password.';
     }
     if (raw.contains('email-already-in-use')) return 'Email already in use.';
     if (raw.contains('weak-password')) return 'Password is too weak.';
-    if (raw.contains('network-request-failed')) return 'No internet connection.';
-    if (raw.contains('google-sign-in-failed')) return 'Google sign-in failed. Make sure your device is connected and try again.';
-    if (raw.contains('sign_in_failed')) return 'Google sign-in failed. Please try again.';
+    if (raw.contains('network-request-failed'))
+      return 'No internet connection.';
+    if (raw.contains('google-sign-in-failed'))
+      return 'Google sign-in failed. Make sure your device is connected and try again.';
+    if (raw.contains('sign_in_failed'))
+      return 'Google sign-in failed. Please try again.';
     return 'Something went wrong. Please try again.';
   }
 }

@@ -10,7 +10,6 @@ class FeatureCard extends StatelessWidget {
   final bool showBadge;
   final String? badgeText;
   final VoidCallback? onTap;
-
   const FeatureCard({
     super.key,
     required this.title,
@@ -22,7 +21,6 @@ class FeatureCard extends StatelessWidget {
     this.badgeText,
     this.onTap,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -100,7 +98,6 @@ class InfoCard extends StatelessWidget {
   final EdgeInsets? padding;
   final Color? color;
   final VoidCallback? onTap;
-
   const InfoCard({
     super.key,
     required this.child,
@@ -108,7 +105,6 @@ class InfoCard extends StatelessWidget {
     this.color,
     this.onTap,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

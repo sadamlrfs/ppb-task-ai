@@ -5,34 +5,31 @@ import 'package:uuid/uuid.dart';
 import '../../core/theme/app_colors.dart';
 import '../../models/note_model.dart';
 import '../../providers/auth_provider.dart';
-import '../../services/ai_service.dart';
+import '../../providers/gemma_provider.dart';
 import '../../services/firestore_service.dart';
 import '../../widgets/app_button.dart';
+import '../settings/model_setup_screen.dart';
 
 class NoteFormScreen extends StatefulWidget {
   final String thesisId;
   final String? bimbinganId;
   final NoteModel? existing;
-
   const NoteFormScreen({
     super.key,
     required this.thesisId,
     this.bimbinganId,
     this.existing,
   });
-
   @override
   State<NoteFormScreen> createState() => _NoteFormScreenState();
 }
 
 class _NoteFormScreenState extends State<NoteFormScreen> {
   final _bodyCtrl = TextEditingController();
-  final _ai = AiService();
   bool _loading = false;
   bool _aiLoading = false;
   bool _scanLoading = false;
   bool get _isEdit => widget.existing != null;
-
   @override
   void initState() {
     super.initState();
@@ -87,8 +84,6 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
     }
   }
 
-  // ── AI: Summarize ────────────────────────────────────────────────────────────
-
   Future<void> _summarizeNote() async {
     if (_bodyCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -96,9 +91,10 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
       );
       return;
     }
+    final gemma = context.read<GemmaProvider>();
     setState(() => _aiLoading = true);
     try {
-      final summary = await _ai.summarizeNote(_bodyCtrl.text.trim());
+      final summary = await gemma.summarizeNote(_bodyCtrl.text.trim());
       if (!mounted) return;
       _showAiResultSheet(
         title: 'Ringkasan AI',
@@ -116,21 +112,17 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
     }
   }
 
-  // ── AI: Scan Handwriting ─────────────────────────────────────────────────────
-
   Future<void> _scanHandwriting() async {
     final source = await _showSourcePicker();
     if (source == null || !mounted) return;
-
     setState(() => _scanLoading = true);
     try {
       final picker = ImagePicker();
-      final photo =
-          await picker.pickImage(source: source, imageQuality: 85);
+      final photo = await picker.pickImage(source: source, imageQuality: 85);
       if (photo == null || !mounted) return;
-
       final bytes = await photo.readAsBytes();
-      final result = await _ai.analyzeHandwriting(bytes);
+      final gemma = context.read<GemmaProvider>();
+      final result = await gemma.analyzeHandwriting(bytes);
       if (!mounted) return;
       _showAiResultSheet(
         title: 'Hasil Scan Tulisan',
@@ -146,6 +138,77 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
     } finally {
       if (mounted) setState(() => _scanLoading = false);
     }
+  }
+
+  void _showModelNotReadyDialog(GemmaProvider gemma) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppColors.lavender,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(Icons.smart_toy_outlined,
+                  color: AppColors.primary, size: 20),
+            ),
+            const SizedBox(width: 12),
+            const Text(
+              'Model AI Belum Siap',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ],
+        ),
+        content: Text(
+          gemma.hasError
+              ? 'Terjadi kesalahan: ${gemma.lastError}'
+              : gemma.isLoading
+                  ? 'Model sedang dimuat, harap tunggu…'
+                  : 'Model Gemma belum diinisialisasi.\n\n'
+                      'Pastikan file model.bin sudah tersalin ke '
+                      'direktori dokumen aplikasi, lalu inisialisasi '
+                      'dari halaman pengaturan.',
+          style: const TextStyle(
+            fontSize: 14,
+            height: 1.6,
+            color: AppColors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(_),
+            child: const Text('Tutup'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.pop(_);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ModelSetupScreen(
+                    onReady: () => Navigator.pop(context),
+                  ),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Setup Model'),
+          ),
+        ],
+      ),
+    );
   }
 
   Future<ImageSource?> _showSourcePicker() {
@@ -232,15 +295,12 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
         },
         onAppend: () {
           final current = _bodyCtrl.text.trim();
-          _bodyCtrl.text =
-              current.isEmpty ? content : '$current\n\n$content';
+          _bodyCtrl.text = current.isEmpty ? content : '$current\n\n$content';
           Navigator.pop(_);
         },
       ),
     );
   }
-
-  // ── Build ────────────────────────────────────────────────────────────────────
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +373,6 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
               ),
             ),
             const SizedBox(height: 12),
-            // AI Summarize button
             SizedBox(
               width: double.infinity,
               height: 52,
@@ -363,15 +422,12 @@ class _NoteFormScreenState extends State<NoteFormScreen> {
   }
 }
 
-// ── AI Result Bottom Sheet ────────────────────────────────────────────────────
-
 class _AiResultSheet extends StatelessWidget {
   final String title;
   final IconData icon;
   final String content;
   final VoidCallback onReplace;
   final VoidCallback onAppend;
-
   const _AiResultSheet({
     required this.title,
     required this.icon,
@@ -379,7 +435,6 @@ class _AiResultSheet extends StatelessWidget {
     required this.onReplace,
     required this.onAppend,
   });
-
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -393,7 +448,6 @@ class _AiResultSheet extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Handle bar
             const SizedBox(height: 12),
             Container(
               width: 36,
@@ -404,7 +458,6 @@ class _AiResultSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Title row
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -431,7 +484,6 @@ class _AiResultSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Scrollable content
             Expanded(
               child: ListView(
                 controller: scrollCtrl,
@@ -453,7 +505,6 @@ class _AiResultSheet extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  // Action buttons
                   Row(
                     children: [
                       Expanded(
@@ -463,13 +514,11 @@ class _AiResultSheet extends StatelessWidget {
                           onPressed: onAppend,
                           style: OutlinedButton.styleFrom(
                             foregroundColor: AppColors.primary,
-                            side:
-                                const BorderSide(color: AppColors.primary),
+                            side: const BorderSide(color: AppColors.primary),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                         ),
                       ),
@@ -485,8 +534,7 @@ class _AiResultSheet extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14),
                             ),
-                            padding:
-                                const EdgeInsets.symmetric(vertical: 14),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                         ),
                       ),

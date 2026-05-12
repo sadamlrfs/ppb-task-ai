@@ -8,7 +8,6 @@ import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
-
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -18,7 +17,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   bool _obscure = true;
-
   @override
   void dispose() {
     _emailCtrl.dispose();
@@ -81,8 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 6),
                   const Text(
                     'Masuk untuk kelola bimbingan skripsimu',
-                    style: TextStyle(
-                        fontSize: 14, color: AppColors.textSecondary),
+                    style:
+                        TextStyle(fontSize: 14, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 40),
                   CustomTextField(
@@ -100,9 +98,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     hint: '••••••••',
                     controller: _passCtrl,
                     obscureText: _obscure,
-                    validator: (v) => (v == null || v.length < 6)
-                        ? 'Min 6 characters'
-                        : null,
+                    validator: (v) =>
+                        (v == null || v.length < 6) ? 'Min 6 characters' : null,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscure

@@ -21,13 +21,11 @@ import 'voice_notulen_screen.dart';
 class BimbinganDetailScreen extends StatefulWidget {
   final BimbinganModel bimbingan;
   final String thesisId;
-
   const BimbinganDetailScreen({
     super.key,
     required this.bimbingan,
     required this.thesisId,
   });
-
   @override
   State<BimbinganDetailScreen> createState() => _BimbinganDetailScreenState();
 }
@@ -35,10 +33,7 @@ class BimbinganDetailScreen extends StatefulWidget {
 class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
   final _mediaService = MediaService();
   final _fs = FirestoreService();
-
-  String _currentUid() =>
-      FirebaseAuth.instance.currentUser?.uid ?? 'unknown';
-
+  String _currentUid() => FirebaseAuth.instance.currentUser?.uid ?? 'unknown';
   Future<void> _capturePhoto() async {
     try {
       final file = await _mediaService.capturePhoto();
@@ -94,7 +89,8 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
       const SnackBar(
         content: Row(children: [
           SizedBox(
-              width: 18, height: 18,
+              width: 18,
+              height: 18,
               child: CircularProgressIndicator(
                   color: Colors.white, strokeWidth: 2)),
           SizedBox(width: 14),
@@ -136,12 +132,8 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 40),
         children: [
-          // ── Header card ────────────────────────────────────────────────────
           _HeaderCard(bimbingan: widget.bimbingan),
-
           const SizedBox(height: 20),
-
-          // ── Action row ─────────────────────────────────────────────────────
           _ActionRow(
             onNote: () => Navigator.push(
               context,
@@ -182,10 +174,7 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
               ),
             ),
           ),
-
           const SizedBox(height: 24),
-
-          // ── Notes section ──────────────────────────────────────────────────
           const SectionHeader(title: 'Catatan'),
           const SizedBox(height: 12),
           StreamBuilder<List<NoteModel>>(
@@ -227,10 +216,7 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
               );
             },
           ),
-
           const SizedBox(height: 24),
-
-          // ── Media section ──────────────────────────────────────────────────
           const SectionHeader(title: 'Media'),
           const SizedBox(height: 12),
           StreamBuilder<List<MediaModel>>(
@@ -252,8 +238,9 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
                   label: 'Belum ada media',
                 );
               }
-              final photos =
-                  items.where((m) => m.type == 'photo' || m.type == 'video').toList();
+              final photos = items
+                  .where((m) => m.type == 'photo' || m.type == 'video')
+                  .toList();
               final voices = items.where((m) => m.type == 'voice').toList();
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,8 +256,8 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
                         mainAxisSpacing: 8,
                       ),
                       itemCount: photos.length,
-                      itemBuilder: (_, i) => _MediaTile(
-                          media: photos[i], service: _mediaService),
+                      itemBuilder: (_, i) =>
+                          _MediaTile(media: photos[i], service: _mediaService),
                     ),
                     const SizedBox(height: 12),
                   ],
@@ -281,10 +268,7 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
               );
             },
           ),
-
           const SizedBox(height: 24),
-
-          // ── Links section ──────────────────────────────────────────────────
           const SectionHeader(title: 'Tautan'),
           const SizedBox(height: 12),
           StreamBuilder<List<AttachmentModel>>(
@@ -322,12 +306,9 @@ class _BimbinganDetailScreenState extends State<BimbinganDetailScreen> {
   }
 }
 
-// ── Header Card ───────────────────────────────────────────────────────────────
-
 class _HeaderCard extends StatelessWidget {
   final BimbinganModel bimbingan;
   const _HeaderCard({required this.bimbingan});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -391,8 +372,6 @@ class _HeaderCard extends StatelessWidget {
   }
 }
 
-// ── Action Row ────────────────────────────────────────────────────────────────
-
 class _ActionRow extends StatelessWidget {
   final VoidCallback onNote;
   final VoidCallback onNotulen;
@@ -400,7 +379,6 @@ class _ActionRow extends StatelessWidget {
   final VoidCallback onVideo;
   final VoidCallback onVoice;
   final VoidCallback onLink;
-
   const _ActionRow({
     required this.onNote,
     required this.onNotulen,
@@ -409,18 +387,16 @@ class _ActionRow extends StatelessWidget {
     required this.onVoice,
     required this.onLink,
   });
-
   @override
   Widget build(BuildContext context) {
     final actions = [
-      (Icons.note_alt_outlined,        'Catatan',  onNote),
-      (Icons.record_voice_over_rounded, 'Notulen',  onNotulen),
-      (Icons.camera_alt_rounded,        'Foto',     onPhoto),
-      (Icons.videocam_rounded,          'Video',    onVideo),
-      (Icons.mic_rounded,               'Suara',    onVoice),
-      (Icons.link_rounded,              'Tautan',   onLink),
+      (Icons.note_alt_outlined, 'Catatan', onNote),
+      (Icons.record_voice_over_rounded, 'Notulen', onNotulen),
+      (Icons.camera_alt_rounded, 'Foto', onPhoto),
+      (Icons.videocam_rounded, 'Video', onVideo),
+      (Icons.mic_rounded, 'Suara', onVoice),
+      (Icons.link_rounded, 'Tautan', onLink),
     ];
-
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
@@ -441,13 +417,11 @@ class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
-
   const _ActionButton({
     required this.icon,
     required this.label,
     required this.onTap,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -479,19 +453,15 @@ class _ActionButton extends StatelessWidget {
   }
 }
 
-// ── Note Card ─────────────────────────────────────────────────────────────────
-
 class _NoteCard extends StatelessWidget {
   final NoteModel note;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
-
   const _NoteCard({
     required this.note,
     required this.onEdit,
     required this.onDelete,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -530,14 +500,10 @@ class _NoteCard extends StatelessWidget {
   }
 }
 
-// ── Media Tile ────────────────────────────────────────────────────────────────
-
 class _MediaTile extends StatelessWidget {
   final MediaModel media;
   final MediaService service;
-
   const _MediaTile({required this.media, required this.service});
-
   Future<void> _open(BuildContext context) async {
     if (media.type == 'video') {
       Navigator.push(
@@ -560,8 +526,7 @@ class _MediaTile extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Hapus Media'),
         content: const Text('File ini akan dihapus permanen.'),
         actions: [
@@ -589,7 +554,8 @@ class _MediaTile extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (media.type == 'photo' && media.cloudinaryUrl.isNotEmpty)
-              Image.network(media.cloudinaryUrl, fit: BoxFit.cover,
+              Image.network(media.cloudinaryUrl,
+                  fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
                       color: AppColors.dark,
                       child: const Icon(Icons.broken_image_rounded,
@@ -625,7 +591,6 @@ class _MediaTile extends StatelessWidget {
 class _PhotoViewer extends StatelessWidget {
   final String url;
   const _PhotoViewer({required this.url});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -650,14 +615,10 @@ class _PhotoViewer extends StatelessWidget {
   }
 }
 
-// ── Voice Tile ────────────────────────────────────────────────────────────────
-
 class _VoiceTile extends StatefulWidget {
   final MediaModel media;
   final MediaService service;
-
   const _VoiceTile({required this.media, required this.service});
-
   @override
   State<_VoiceTile> createState() => _VoiceTileState();
 }
@@ -665,7 +626,6 @@ class _VoiceTile extends StatefulWidget {
 class _VoiceTileState extends State<_VoiceTile> {
   final _player = AudioPlayer();
   bool _playing = false;
-
   @override
   void dispose() {
     _player.dispose();
@@ -718,8 +678,8 @@ class _VoiceTileState extends State<_VoiceTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Voice Note',
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600)),
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 2),
                 Text(
                   '${widget.media.durationLabel}  ·  ${DateFormat('d MMM, HH:mm').format(widget.media.capturedAt)}',
@@ -740,14 +700,10 @@ class _VoiceTileState extends State<_VoiceTile> {
   }
 }
 
-// ── Attachment Card ───────────────────────────────────────────────────────────
-
 class _AttachmentCard extends StatelessWidget {
   final AttachmentModel attachment;
   final VoidCallback onDelete;
-
   const _AttachmentCard({required this.attachment, required this.onDelete});
-
   IconData _kindIcon(String kind) {
     switch (kind) {
       case 'video':
@@ -770,7 +726,8 @@ class _AttachmentCard extends StatelessWidget {
       final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
       if (!ok && context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Tidak ada aplikasi yang bisa membuka tautan ini')),
+          const SnackBar(
+              content: Text('Tidak ada aplikasi yang bisa membuka tautan ini')),
         );
       }
     } catch (_) {
@@ -843,14 +800,10 @@ class _AttachmentCard extends StatelessWidget {
   }
 }
 
-// ── Empty Hint ────────────────────────────────────────────────────────────────
-
 class _EmptyHint extends StatelessWidget {
   final IconData icon;
   final String label;
-
   const _EmptyHint({required this.icon, required this.label});
-
   @override
   Widget build(BuildContext context) {
     return Container(

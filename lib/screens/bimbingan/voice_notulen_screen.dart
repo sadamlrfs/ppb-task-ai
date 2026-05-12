@@ -10,13 +10,11 @@ import '../../services/firestore_service.dart';
 class VoiceNotulenScreen extends StatefulWidget {
   final String thesisId;
   final String bimbinganId;
-
   const VoiceNotulenScreen({
     super.key,
     required this.thesisId,
     required this.bimbinganId,
   });
-
   @override
   State<VoiceNotulenScreen> createState() => _VoiceNotulenScreenState();
 }
@@ -24,18 +22,15 @@ class VoiceNotulenScreen extends StatefulWidget {
 class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
   final _speech = SpeechToText();
   final _editCtrl = TextEditingController();
-
   bool _speechAvailable = false;
   bool _listening = false;
   bool _saving = false;
-  String _liveWords = '';   // real-time partial result
+  String _liveWords = '';
   String _localeId = 'id_ID';
-
   static const _locales = [
     ('id_ID', '🇮🇩  Indonesia'),
     ('en_US', '🇺🇸  English'),
   ];
-
   @override
   void initState() {
     super.initState();
@@ -65,8 +60,8 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
           final existing = _editCtrl.text;
           _editCtrl.text =
               existing.isEmpty ? _liveWords : '$existing\n$_liveWords';
-          _editCtrl.selection = TextSelection.collapsed(
-              offset: _editCtrl.text.length);
+          _editCtrl.selection =
+              TextSelection.collapsed(offset: _editCtrl.text.length);
           _liveWords = '';
         }
       });
@@ -87,8 +82,8 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
               _editCtrl.text = existing.isEmpty
                   ? result.recognizedWords
                   : '$existing\n${result.recognizedWords}';
-              _editCtrl.selection = TextSelection.collapsed(
-                  offset: _editCtrl.text.length);
+              _editCtrl.selection =
+                  TextSelection.collapsed(offset: _editCtrl.text.length);
               _liveWords = '';
             }
           }
@@ -141,7 +136,6 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
   @override
   Widget build(BuildContext context) {
     final hasText = _editCtrl.text.isNotEmpty || _liveWords.isNotEmpty;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -151,7 +145,6 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          // Locale selector
           PopupMenuButton<String>(
             initialValue: _localeId,
             onSelected: (v) => setState(() => _localeId = v),
@@ -166,7 +159,6 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 24),
         child: Column(
           children: [
-            // ── Status banner ──────────────────────────────────────────────
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: double.infinity,
@@ -198,19 +190,14 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
                               : 'Speech recognition tidak tersedia di perangkat ini',
                       style: TextStyle(
                         fontSize: 12,
-                        color: _listening
-                            ? AppColors.error
-                            : AppColors.primary,
+                        color: _listening ? AppColors.error : AppColors.primary,
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-
             const SizedBox(height: 16),
-
-            // ── Text result area ───────────────────────────────────────────
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(16),
@@ -221,7 +208,6 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Live preview while listening
                     if (_listening && _liveWords.isNotEmpty) ...[
                       Container(
                         width: double.infinity,
@@ -243,8 +229,6 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
                       ),
                       const SizedBox(height: 8),
                     ],
-
-                    // Editable finalized text
                     Expanded(
                       child: TextField(
                         controller: _editCtrl,
@@ -273,10 +257,7 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // ── Mic button ─────────────────────────────────────────────────
             GestureDetector(
               onTap: _speechAvailable ? _toggleListen : null,
               child: AnimatedContainer(
@@ -302,22 +283,17 @@ class _VoiceNotulenScreenState extends State<VoiceNotulenScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 8),
             Text(
               _listening ? 'Tap untuk berhenti' : 'Tap untuk mulai',
-              style: const TextStyle(
-                  fontSize: 12, color: AppColors.textSecondary),
+              style:
+                  const TextStyle(fontSize: 12, color: AppColors.textSecondary),
             ),
-
             const SizedBox(height: 20),
-
-            // ── Save button ────────────────────────────────────────────────
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed:
-                    (hasText && !_saving && !_listening) ? _save : null,
+                onPressed: (hasText && !_saving && !_listening) ? _save : null,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: Colors.white,

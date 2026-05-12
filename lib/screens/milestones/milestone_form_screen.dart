@@ -11,13 +11,11 @@ import '../../widgets/custom_text_field.dart';
 class MilestoneFormScreen extends StatefulWidget {
   final String thesisId;
   final MilestoneModel? existing;
-
   const MilestoneFormScreen({
     super.key,
     required this.thesisId,
     this.existing,
   });
-
   @override
   State<MilestoneFormScreen> createState() => _MilestoneFormScreenState();
 }
@@ -28,9 +26,7 @@ class _MilestoneFormScreenState extends State<MilestoneFormScreen> {
   final _descCtrl = TextEditingController();
   DateTime _dueDate = DateTime.now().add(const Duration(days: 14));
   bool _loading = false;
-
   bool get _isEdit => widget.existing != null;
-
   @override
   void initState() {
     super.initState();
@@ -150,8 +146,8 @@ class _MilestoneFormScreenState extends State<MilestoneFormScreen> {
                 onTap: _pickDate,
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 16),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                   decoration: BoxDecoration(
                     color: AppColors.surface,
                     borderRadius: BorderRadius.circular(16),

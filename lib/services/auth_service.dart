@@ -8,12 +8,9 @@ import '../models/user_model.dart';
 class AuthService {
   final _auth = FirebaseAuth.instance;
   final _db = FirebaseFirestore.instance;
-  // Only instantiate GoogleSignIn on non-web platforms
   final _googleSignIn = kIsWeb ? null : GoogleSignIn();
-
   Stream<User?> get authStateChanges => _auth.authStateChanges();
   User? get currentUser => _auth.currentUser;
-
   Future<UserModel?> signInWithEmail(String email, String password) async {
     final cred = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
@@ -41,16 +38,13 @@ class AuthService {
 
   Future<UserModel?> signInWithGoogle() async {
     UserCredential result;
-
     if (kIsWeb) {
-      // Web: use Firebase Auth popup — no google_sign_in needed
       final provider = GoogleAuthProvider();
       result = await _auth.signInWithPopup(provider);
     } else {
-      // Mobile: use google_sign_in package
       try {
         final googleUser = await _googleSignIn!.signIn();
-        if (googleUser == null) return null; // user cancelled
+        if (googleUser == null) return null;
         final googleAuth = await googleUser.authentication;
         final cred = GoogleAuthProvider.credential(
           accessToken: googleAuth.accessToken,
@@ -59,18 +53,15 @@ class AuthService {
         result = await _auth.signInWithCredential(cred);
       } on PlatformException catch (e) {
         if (e.code == 'sign_in_cancelled') return null;
-        // code 10 = DEVELOPER_ERROR (SHA-1 not registered in Firebase)
         throw FirebaseAuthException(
           code: 'google-sign-in-failed',
           message: e.message ?? e.code,
         );
       }
     }
-
     final uid = result.user!.uid;
     final existing = await _fetchUser(uid);
     if (existing != null) return existing;
-
     final user = UserModel(
       uid: uid,
       name: result.user!.displayName ?? result.user!.email ?? uid,

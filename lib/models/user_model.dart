@@ -7,7 +7,6 @@ class UserModel {
   final String role;
   final String? photoURL;
   final DateTime createdAt;
-
   const UserModel({
     required this.uid,
     required this.name,
@@ -16,7 +15,6 @@ class UserModel {
     this.photoURL,
     required this.createdAt,
   });
-
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return UserModel(
@@ -28,7 +26,6 @@ class UserModel {
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'name': name,
         'email': email,

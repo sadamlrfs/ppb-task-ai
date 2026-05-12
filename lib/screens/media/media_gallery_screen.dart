@@ -12,20 +12,17 @@ import 'voice_recorder_screen.dart';
 class MediaGalleryScreen extends StatefulWidget {
   final String thesisId;
   final String thesisTitle;
-
   const MediaGalleryScreen({
     super.key,
     required this.thesisId,
     required this.thesisTitle,
   });
-
   @override
   State<MediaGalleryScreen> createState() => _MediaGalleryScreenState();
 }
 
 class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
   final _mediaService = MediaService();
-
   Future<void> _capturePhoto() async {
     try {
       final file = await _mediaService.capturePhoto();
@@ -70,9 +67,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
     }
   }
 
-  String _currentUid() =>
-      FirebaseAuth.instance.currentUser?.uid ?? 'unknown';
-
+  String _currentUid() => FirebaseAuth.instance.currentUser?.uid ?? 'unknown';
   void _showOptions() {
     showModalBottomSheet(
       context: context,
@@ -185,8 +180,8 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text('No media yet',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w700)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 6),
                   const Text('Tap + to add photos, videos or voice notes',
                       style: TextStyle(
@@ -195,24 +190,22 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
               ),
             );
           }
-
-          final photos =
-              items.where((m) => m.type == 'photo' || m.type == 'video').toList();
+          final photos = items
+              .where((m) => m.type == 'photo' || m.type == 'video')
+              .toList();
           final voices = items.where((m) => m.type == 'voice').toList();
-
           return ListView(
             padding: const EdgeInsets.fromLTRB(22, 16, 22, 100),
             children: [
               if (photos.isNotEmpty) ...[
                 const Text('Photos & Videos',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w700)),
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 12),
                 GridView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,
@@ -225,11 +218,11 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
               ],
               if (voices.isNotEmpty) ...[
                 const Text('Voice Notes',
-                    style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w700)),
+                    style:
+                        TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 12),
-                ...voices.map((v) =>
-                    _VoiceTile(media: v, service: _mediaService)),
+                ...voices
+                    .map((v) => _VoiceTile(media: v, service: _mediaService)),
               ],
             ],
           );
@@ -242,9 +235,7 @@ class _MediaGalleryScreenState extends State<MediaGalleryScreen> {
 class _MediaTile extends StatelessWidget {
   final MediaModel media;
   final MediaService service;
-
   const _MediaTile({required this.media, required this.service});
-
   Future<void> _open(BuildContext context) async {
     if (media.type == 'video') {
       Navigator.push(
@@ -274,7 +265,8 @@ class _MediaTile extends StatelessWidget {
           fit: StackFit.expand,
           children: [
             if (media.type == 'photo' && media.cloudinaryUrl.isNotEmpty)
-              Image.network(media.cloudinaryUrl, fit: BoxFit.cover,
+              Image.network(media.cloudinaryUrl,
+                  fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(
                       color: AppColors.dark,
                       child: const Icon(Icons.broken_image_rounded,
@@ -310,8 +302,7 @@ class _MediaTile extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Delete Media'),
         content: const Text('This will permanently delete this file.'),
         actions: [
@@ -332,9 +323,7 @@ class _MediaTile extends StatelessWidget {
 class _VoiceTile extends StatefulWidget {
   final MediaModel media;
   final MediaService service;
-
   const _VoiceTile({required this.media, required this.service});
-
   @override
   State<_VoiceTile> createState() => _VoiceTileState();
 }
@@ -342,7 +331,6 @@ class _VoiceTile extends StatefulWidget {
 class _VoiceTileState extends State<_VoiceTile> {
   final _player = AudioPlayer();
   bool _playing = false;
-
   @override
   void dispose() {
     _player.dispose();
@@ -395,8 +383,8 @@ class _VoiceTileState extends State<_VoiceTile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text('Voice Note',
-                    style: TextStyle(
-                        fontSize: 14, fontWeight: FontWeight.w600)),
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 2),
                 Text(
                   '${widget.media.durationLabel}  ·  ${DateFormat('d MMM, HH:mm').format(widget.media.capturedAt)}',
@@ -423,7 +411,6 @@ class _OptionTile extends StatelessWidget {
   final Color iconColor;
   final String label;
   final VoidCallback onTap;
-
   const _OptionTile({
     required this.icon,
     required this.iconBg,
@@ -431,7 +418,6 @@ class _OptionTile extends StatelessWidget {
     required this.label,
     required this.onTap,
   });
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
@@ -439,14 +425,14 @@ class _OptionTile extends StatelessWidget {
       leading: Container(
         width: 44,
         height: 44,
-        decoration:
-            BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(
+            color: iconBg, borderRadius: BorderRadius.circular(12)),
         child: Icon(icon, color: iconColor),
       ),
       title: Text(label,
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-      trailing: const Icon(Icons.chevron_right_rounded,
-          color: AppColors.textLight),
+      trailing:
+          const Icon(Icons.chevron_right_rounded, color: AppColors.textLight),
     );
   }
 }
@@ -454,7 +440,6 @@ class _OptionTile extends StatelessWidget {
 class _PhotoViewer extends StatelessWidget {
   final String url;
   const _PhotoViewer({required this.url});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

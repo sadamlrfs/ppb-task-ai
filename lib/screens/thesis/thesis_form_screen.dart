@@ -13,7 +13,6 @@ class ThesisFormScreen extends StatefulWidget {
   final ThesisModel? existing;
   final bool isSetup;
   const ThesisFormScreen({super.key, this.existing, this.isSetup = false});
-
   @override
   State<ThesisFormScreen> createState() => _ThesisFormScreenState();
 }
@@ -27,9 +26,7 @@ class _ThesisFormScreenState extends State<ThesisFormScreen> {
   DateTime _targetDate = DateTime.now().add(const Duration(days: 180));
   String _status = 'planning';
   bool _loading = false;
-
   bool get _isEdit => widget.existing != null;
-
   @override
   void initState() {
     super.initState();
@@ -61,8 +58,7 @@ class _ThesisFormScreenState extends State<ThesisFormScreen> {
       lastDate: DateTime.now().add(const Duration(days: 1825)),
       builder: (ctx, child) => Theme(
         data: Theme.of(ctx).copyWith(
-          colorScheme:
-              const ColorScheme.light(primary: AppColors.primary),
+          colorScheme: const ColorScheme.light(primary: AppColors.primary),
         ),
         child: child!,
       ),
@@ -115,10 +111,10 @@ class _ThesisFormScreenState extends State<ThesisFormScreen> {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text('Delete Thesis'),
-        content: const Text('This will permanently delete the thesis and cannot be undone.'),
+        content: const Text(
+            'This will permanently delete the thesis and cannot be undone.'),
         actions: [
           TextButton(
               onPressed: () => Navigator.pop(context, false),
@@ -227,10 +223,8 @@ class _DateField extends StatelessWidget {
   final String label;
   final DateTime value;
   final VoidCallback onTap;
-
   const _DateField(
       {required this.label, required this.value, required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -247,8 +241,7 @@ class _DateField extends StatelessWidget {
           onTap: onTap,
           child: Container(
             width: double.infinity,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
@@ -275,16 +268,13 @@ class _DateField extends StatelessWidget {
 class _StatusSelector extends StatelessWidget {
   final String value;
   final ValueChanged<String> onChanged;
-
   const _StatusSelector({required this.value, required this.onChanged});
-
   static const _statuses = [
     ('planning', 'Planning'),
     ('in_progress', 'In Progress'),
     ('review', 'Under Review'),
     ('completed', 'Completed'),
   ];
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -306,8 +296,8 @@ class _StatusSelector extends StatelessWidget {
               onTap: () => onChanged(s.$1),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 14, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 decoration: BoxDecoration(
                   color: selected ? AppColors.primary : AppColors.surface,
                   borderRadius: BorderRadius.circular(12),
@@ -317,9 +307,8 @@ class _StatusSelector extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: selected
-                        ? AppColors.surface
-                        : AppColors.textSecondary,
+                    color:
+                        selected ? AppColors.surface : AppColors.textSecondary,
                   ),
                 ),
               ),

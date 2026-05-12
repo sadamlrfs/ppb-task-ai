@@ -32,7 +32,8 @@ class AppTheme {
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColors.surface,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide.none,
@@ -82,7 +83,8 @@ class AppTheme {
           unselectedItemColor: AppColors.textLight,
           elevation: 0,
           type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
+          selectedLabelStyle:
+              TextStyle(fontSize: 11, fontWeight: FontWeight.w600),
           unselectedLabelStyle: TextStyle(fontSize: 11),
         ),
         chipTheme: ChipThemeData(

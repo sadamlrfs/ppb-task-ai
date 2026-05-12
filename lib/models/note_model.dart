@@ -7,7 +7,6 @@ class NoteModel {
   final String authorId;
   final String body;
   final DateTime createdAt;
-
   const NoteModel({
     required this.id,
     required this.thesisId,
@@ -16,7 +15,6 @@ class NoteModel {
     required this.body,
     required this.createdAt,
   });
-
   factory NoteModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return NoteModel(
@@ -28,7 +26,6 @@ class NoteModel {
       createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'thesisId': thesisId,
         'bimbinganId': bimbinganId,

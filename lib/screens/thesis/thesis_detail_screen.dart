@@ -21,13 +21,12 @@ import 'thesis_form_screen.dart';
 class ThesisDetailScreen extends StatelessWidget {
   final ThesisModel thesis;
   final bool isRoot;
-  const ThesisDetailScreen({super.key, required this.thesis, this.isRoot = false});
-
+  const ThesisDetailScreen(
+      {super.key, required this.thesis, this.isRoot = false});
   @override
   Widget build(BuildContext context) {
     final fs = FirestoreService();
     final auth = context.read<AuthProvider>();
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -68,7 +67,6 @@ class ThesisDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 22),
         children: [
           const SizedBox(height: 4),
-          // ── Title card ──────────────────────────────────────────────────
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
@@ -130,7 +128,8 @@ class ThesisDetailScreen extends StatelessWidget {
                   Text(
                     thesis.abstract,
                     style: const TextStyle(
-                        fontSize: 13, color: AppColors.textSecondary,
+                        fontSize: 13,
+                        color: AppColors.textSecondary,
                         height: 1.5),
                     maxLines: 4,
                     overflow: TextOverflow.ellipsis,
@@ -139,18 +138,14 @@ class ThesisDetailScreen extends StatelessWidget {
               ],
             ),
           ),
-
           const SizedBox(height: 28),
-
-          // ── Milestones ───────────────────────────────────────────────────
           SectionHeader(
             title: 'Milestones',
             actionLabel: '+ Add',
             onAction: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) =>
-                        MilestoneFormScreen(thesisId: thesis.id))),
+                    builder: (_) => MilestoneFormScreen(thesisId: thesis.id))),
           ),
           const SizedBox(height: 12),
           StreamBuilder<List<MilestoneModel>>(
@@ -181,26 +176,21 @@ class ThesisDetailScreen extends StatelessWidget {
                 children: items
                     .map((m) => _MilestoneRow(
                           milestone: m,
-                          onComplete: () =>
-                              fs.completeMilestone(m.id),
+                          onComplete: () => fs.completeMilestone(m.id),
                           onDelete: () => fs.deleteMilestone(m.id),
                         ))
                     .toList(),
               );
             },
           ),
-
           const SizedBox(height: 28),
-
-          // ── Sessions ─────────────────────────────────────────────────────
           SectionHeader(
             title: 'Sessions',
             actionLabel: '+ Add',
             onAction: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) =>
-                        SessionFormScreen(thesisId: thesis.id))),
+                    builder: (_) => SessionFormScreen(thesisId: thesis.id))),
           ),
           const SizedBox(height: 12),
           StreamBuilder<List<SessionModel>>(
@@ -232,10 +222,7 @@ class ThesisDetailScreen extends StatelessWidget {
               );
             },
           ),
-
           const SizedBox(height: 28),
-
-          // ── Notes ────────────────────────────────────────────────────────
           SectionHeader(
             title: 'Notes',
             actionLabel: '+ Add',
@@ -265,27 +252,25 @@ class ThesisDetailScreen extends StatelessWidget {
                   onAdd: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              NoteFormScreen(thesisId: thesis.id))),
+                          builder: (_) => NoteFormScreen(thesisId: thesis.id))),
                 );
               }
               return Column(
-                children: items.map((n) => _NoteRow(note: n, onDelete: () => fs.deleteNote(n.id))).toList(),
+                children: items
+                    .map((n) =>
+                        _NoteRow(note: n, onDelete: () => fs.deleteNote(n.id)))
+                    .toList(),
               );
             },
           ),
-
           const SizedBox(height: 28),
-
-          // ── Attachments ──────────────────────────────────────────────────
           SectionHeader(
             title: 'Attachments',
             actionLabel: '+ Add',
             onAction: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) =>
-                        AttachmentFormScreen(thesisId: thesis.id))),
+                    builder: (_) => AttachmentFormScreen(thesisId: thesis.id))),
           ),
           const SizedBox(height: 12),
           StreamBuilder<List<AttachmentModel>>(
@@ -322,10 +307,7 @@ class ThesisDetailScreen extends StatelessWidget {
               );
             },
           ),
-
           const SizedBox(height: 28),
-
-          // ── Quick links ──────────────────────────────────────────────────
           Row(
             children: [
               Expanded(
@@ -336,8 +318,7 @@ class ThesisDetailScreen extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (_) =>
-                              NoteFormScreen(thesisId: thesis.id))),
+                          builder: (_) => NoteFormScreen(thesisId: thesis.id))),
                 ),
               ),
               const SizedBox(width: 12),
@@ -350,13 +331,11 @@ class ThesisDetailScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (_) => MediaGalleryScreen(
-                              thesisId: thesis.id,
-                              thesisTitle: thesis.title))),
+                              thesisId: thesis.id, thesisTitle: thesis.title))),
                 ),
               ),
             ],
           ),
-
           const SizedBox(height: 32),
         ],
       ),
@@ -403,8 +382,8 @@ class ThesisDetailScreen extends StatelessWidget {
             ),
             Text(
               auth.user?.email ?? '',
-              style: const TextStyle(
-                  color: AppColors.textSecondary, fontSize: 13),
+              style:
+                  const TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 24),
             ListTile(
@@ -426,22 +405,29 @@ class ThesisDetailScreen extends StatelessWidget {
 class _StatusBadge extends StatelessWidget {
   final String status;
   const _StatusBadge({required this.status});
-
   Color get _color {
     switch (status) {
-      case 'completed': return AppColors.success;
-      case 'review': return AppColors.warning;
-      case 'in_progress': return AppColors.primary;
-      default: return AppColors.textLight;
+      case 'completed':
+        return AppColors.success;
+      case 'review':
+        return AppColors.warning;
+      case 'in_progress':
+        return AppColors.primary;
+      default:
+        return AppColors.textLight;
     }
   }
 
   String get _label {
     switch (status) {
-      case 'in_progress': return 'In Progress';
-      case 'review': return 'Under Review';
-      case 'completed': return 'Completed';
-      default: return 'Planning';
+      case 'in_progress':
+        return 'In Progress';
+      case 'review':
+        return 'Under Review';
+      case 'completed':
+        return 'Completed';
+      default:
+        return 'Planning';
     }
   }
 
@@ -464,12 +450,10 @@ class _MilestoneRow extends StatelessWidget {
   final MilestoneModel milestone;
   final VoidCallback onComplete;
   final VoidCallback onDelete;
-
   const _MilestoneRow(
       {required this.milestone,
       required this.onComplete,
       required this.onDelete});
-
   @override
   Widget build(BuildContext context) {
     final done = milestone.status == 'completed';
@@ -556,7 +540,6 @@ class _MilestoneRow extends StatelessWidget {
 class _SessionRow extends StatelessWidget {
   final SessionModel session;
   const _SessionRow({required this.session});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -600,8 +583,7 @@ class _SessionRow extends StatelessWidget {
                         child: Text(
                           session.locationDisplay,
                           style: const TextStyle(
-                              fontSize: 11,
-                              color: AppColors.textSecondary),
+                              fontSize: 11, color: AppColors.textSecondary),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -620,7 +602,6 @@ class _SessionRow extends StatelessWidget {
 class _SessionStatusChip extends StatelessWidget {
   final String status;
   const _SessionStatusChip({required this.status});
-
   @override
   Widget build(BuildContext context) {
     Color color;
@@ -655,7 +636,6 @@ class _EmptySection extends StatelessWidget {
   final String label;
   final VoidCallback onAdd;
   const _EmptySection({required this.label, required this.onAdd});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -688,9 +668,7 @@ class _EmptySection extends StatelessWidget {
 class _NoteRow extends StatelessWidget {
   final NoteModel note;
   final VoidCallback onDelete;
-
   const _NoteRow({required this.note, required this.onDelete});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -745,23 +723,27 @@ class _NoteRow extends StatelessWidget {
 class _AttachmentRow extends StatelessWidget {
   final AttachmentModel attachment;
   final VoidCallback onDelete;
-
   const _AttachmentRow({required this.attachment, required this.onDelete});
-
   static IconData _iconFor(String kind) {
     switch (kind) {
-      case 'video': return Icons.play_circle_outline_rounded;
-      case 'image': return Icons.image_outlined;
-      case 'audio': return Icons.headphones_outlined;
-      case 'doc':   return Icons.description_outlined;
-      default:      return Icons.link_rounded;
+      case 'video':
+        return Icons.play_circle_outline_rounded;
+      case 'image':
+        return Icons.image_outlined;
+      case 'audio':
+        return Icons.headphones_outlined;
+      case 'doc':
+        return Icons.description_outlined;
+      default:
+        return Icons.link_rounded;
     }
   }
 
   Future<void> _open() async {
     final uri = Uri.tryParse(attachment.url);
     if (uri == null) return;
-    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (await canLaunchUrl(uri))
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -820,13 +802,11 @@ class _QuickLink extends StatelessWidget {
   final String label;
   final Color color;
   final VoidCallback onTap;
-
   const _QuickLink(
       {required this.icon,
       required this.label,
       required this.color,
       required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -842,8 +822,8 @@ class _QuickLink extends StatelessWidget {
             Icon(icon, color: AppColors.textPrimary, size: 24),
             const SizedBox(height: 6),
             Text(label,
-                style: const TextStyle(
-                    fontSize: 12, fontWeight: FontWeight.w600)),
+                style:
+                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
           ],
         ),
       ),

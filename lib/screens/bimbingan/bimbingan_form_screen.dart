@@ -11,13 +11,11 @@ import '../../widgets/custom_text_field.dart';
 class BimbinganFormScreen extends StatefulWidget {
   final String thesisId;
   final BimbinganModel? existing;
-
   const BimbinganFormScreen({
     super.key,
     required this.thesisId,
     this.existing,
   });
-
   @override
   State<BimbinganFormScreen> createState() => _BimbinganFormScreenState();
 }
@@ -29,9 +27,7 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   bool _loading = false;
-
   bool get _isEdit => widget.existing != null;
-
   DateTime get _combined => DateTime(
         _selectedDate.year,
         _selectedDate.month,
@@ -39,7 +35,6 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
         _selectedTime.hour,
         _selectedTime.minute,
       );
-
   @override
   void initState() {
     super.initState();
@@ -150,7 +145,8 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Hapus', style: TextStyle(color: AppColors.error)),
+            child:
+                const Text('Hapus', style: TextStyle(color: AppColors.error)),
           ),
         ],
       ),
@@ -189,18 +185,15 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-
               CustomTextField(
                 label: 'Judul',
                 hint: 'Mis. Bimbingan ke-1',
                 controller: _titleCtrl,
-                validator: (v) =>
-                    (v == null || v.trim().isEmpty) ? 'Judul wajib diisi' : null,
+                validator: (v) => (v == null || v.trim().isEmpty)
+                    ? 'Judul wajib diisi'
+                    : null,
               ),
-
               const SizedBox(height: 16),
-
-              // Date + Time row
               const Text(
                 'Tanggal & Waktu',
                 style: TextStyle(
@@ -269,7 +262,6 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 8),
               Container(
                 padding:
@@ -286,16 +278,14 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
                     const Expanded(
                       child: Text(
                         'Pengingat otomatis: 1 hari, 3 jam, dan 1 jam sebelum',
-                        style: TextStyle(
-                            fontSize: 12, color: AppColors.primary),
+                        style:
+                            TextStyle(fontSize: 12, color: AppColors.primary),
                       ),
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 16),
-
               const Text(
                 'Rencana / Agenda (opsional)',
                 style: TextStyle(
@@ -331,9 +321,7 @@ class _BimbinganFormScreenState extends State<BimbinganFormScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 32),
-
               AppButton(
                 label: _isEdit ? 'Simpan Perubahan' : 'Buat Bimbingan',
                 loading: _loading,

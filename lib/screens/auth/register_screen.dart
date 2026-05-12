@@ -7,7 +7,6 @@ import '../../widgets/custom_text_field.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
-
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -18,7 +17,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   bool _obscure = true;
-
   @override
   void dispose() {
     _nameCtrl.dispose();
@@ -94,8 +92,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 6),
                   const Text(
                     'Daftar untuk mulai kelola bimbingan skripsimu',
-                    style: TextStyle(
-                        fontSize: 14, color: AppColors.textSecondary),
+                    style:
+                        TextStyle(fontSize: 14, color: AppColors.textSecondary),
                   ),
                   const SizedBox(height: 36),
                   CustomTextField(
@@ -121,9 +119,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     hint: '••••••••',
                     controller: _passCtrl,
                     obscureText: _obscure,
-                    validator: (v) => (v == null || v.length < 6)
-                        ? 'Min 6 characters'
-                        : null,
+                    validator: (v) =>
+                        (v == null || v.length < 6) ? 'Min 6 characters' : null,
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscure

@@ -8,21 +8,26 @@ import '../attachments/attachment_form_screen.dart';
 class ThesisLinksScreen extends StatelessWidget {
   final String thesisId;
   const ThesisLinksScreen({super.key, required this.thesisId});
-
   static IconData _iconFor(String kind) {
     switch (kind) {
-      case 'video': return Icons.play_circle_outline_rounded;
-      case 'image': return Icons.image_outlined;
-      case 'audio': return Icons.headphones_outlined;
-      case 'doc':   return Icons.description_outlined;
-      default:      return Icons.link_rounded;
+      case 'video':
+        return Icons.play_circle_outline_rounded;
+      case 'image':
+        return Icons.image_outlined;
+      case 'audio':
+        return Icons.headphones_outlined;
+      case 'doc':
+        return Icons.description_outlined;
+      default:
+        return Icons.link_rounded;
     }
   }
 
   Future<void> _launch(String url) async {
     final uri = Uri.tryParse(url);
     if (uri == null) return;
-    if (await canLaunchUrl(uri)) await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (await canLaunchUrl(uri))
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
   @override
@@ -80,8 +85,8 @@ class ThesisLinksScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   const Text('Belum ada tautan',
-                      style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w700)),
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
                   const SizedBox(height: 6),
                   const Text('Simpan link penting skripsimu di sini',
                       style: TextStyle(

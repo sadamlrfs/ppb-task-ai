@@ -7,10 +7,9 @@ class ThesisModel {
   final String field;
   final String studentId;
   final String supervisorId;
-  final String status; // 'planning' | 'in_progress' | 'review' | 'completed'
+  final String status;
   final DateTime startDate;
   final DateTime targetDate;
-
   const ThesisModel({
     required this.id,
     required this.title,
@@ -22,7 +21,6 @@ class ThesisModel {
     required this.startDate,
     required this.targetDate,
   });
-
   factory ThesisModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return ThesisModel(
@@ -38,7 +36,6 @@ class ThesisModel {
           DateTime.now().add(const Duration(days: 180)),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'title': title,
         'abstract': abstract,
@@ -49,7 +46,6 @@ class ThesisModel {
         'startDate': Timestamp.fromDate(startDate),
         'targetDate': Timestamp.fromDate(targetDate),
       };
-
   ThesisModel copyWith({
     String? title,
     String? abstract,

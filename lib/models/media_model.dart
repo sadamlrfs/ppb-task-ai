@@ -5,11 +5,10 @@ class MediaModel {
   final String thesisId;
   final String? bimbinganId;
   final String authorId;
-  final String type; // 'photo' | 'video' | 'voice'
+  final String type;
   final String cloudinaryUrl;
   final int? durationSeconds;
   final DateTime capturedAt;
-
   const MediaModel({
     required this.id,
     required this.thesisId,
@@ -20,7 +19,6 @@ class MediaModel {
     this.durationSeconds,
     required this.capturedAt,
   });
-
   factory MediaModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return MediaModel(
@@ -34,7 +32,6 @@ class MediaModel {
       capturedAt: (d['capturedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'thesisId': thesisId,
         'bimbinganId': bimbinganId,
@@ -44,7 +41,6 @@ class MediaModel {
         'durationSeconds': durationSeconds,
         'capturedAt': Timestamp.fromDate(capturedAt),
       };
-
   String get durationLabel {
     if (durationSeconds == null) return '';
     final m = durationSeconds! ~/ 60;

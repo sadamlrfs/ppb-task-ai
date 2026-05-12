@@ -15,13 +15,11 @@ import '../../services/media_service.dart';
 class VoiceRecorderScreen extends StatefulWidget {
   final String thesisId;
   final String? bimbinganId;
-
   const VoiceRecorderScreen({
     super.key,
     required this.thesisId,
     this.bimbinganId,
   });
-
   @override
   State<VoiceRecorderScreen> createState() => _VoiceRecorderScreenState();
 }
@@ -29,7 +27,6 @@ class VoiceRecorderScreen extends StatefulWidget {
 class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
   final _recorder = AudioRecorder();
   final _player = AudioPlayer();
-
   bool _isRecording = false;
   bool _isPlaying = false;
   bool _saving = false;
@@ -38,7 +35,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
   Timer? _timer;
   Duration _playPosition = Duration.zero;
   Duration _playDuration = Duration.zero;
-
   @override
   void initState() {
     super.initState();
@@ -71,23 +67,19 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
       }
       return;
     }
-
     final dir = await getApplicationDocumentsDirectory();
     final audioDir = Directory('${dir.path}/thesis_media/voice');
     if (!audioDir.existsSync()) audioDir.createSync(recursive: true);
     final path = '${audioDir.path}/${const Uuid().v4()}.m4a';
-
     await _recorder.start(
       const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000),
       path: path,
     );
-
     setState(() {
       _isRecording = true;
       _elapsed = 0;
       _recordedPath = null;
     });
-
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (mounted) setState(() => _elapsed++);
     });
@@ -132,7 +124,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
     try {
       final uid = context.read<AuthProvider>().user!.uid;
       final url = await CloudinaryService.upload(_recordedPath!);
-      // clean up local temp file after upload
       final f = File(_recordedPath!);
       if (f.existsSync()) f.deleteSync();
       await MediaService().saveMedia(MediaModel(
@@ -179,7 +170,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Visualizer orb
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
               width: _isRecording ? 160 : 130,
@@ -204,10 +194,7 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                 color: _isRecording ? AppColors.error : AppColors.primary,
               ),
             ),
-
             const SizedBox(height: 32),
-
-            // Timer
             Text(
               _formatSeconds(_elapsed),
               style: const TextStyle(
@@ -217,22 +204,17 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                 letterSpacing: 4,
               ),
             ),
-
             const SizedBox(height: 8),
-
             Text(
               _isRecording
                   ? 'Recording…'
                   : _recordedPath != null
                       ? 'Recording complete'
                       : 'Tap to start recording',
-              style: const TextStyle(
-                  fontSize: 14, color: AppColors.textSecondary),
+              style:
+                  const TextStyle(fontSize: 14, color: AppColors.textSecondary),
             ),
-
             const SizedBox(height: 48),
-
-            // Playback slider (shown after recording)
             if (_recordedPath != null && !_isRecording) ...[
               Row(
                 children: [
@@ -265,13 +247,10 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
               ),
               const SizedBox(height: 12),
             ],
-
-            // Controls
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 if (_recordedPath != null && !_isRecording) ...[
-                  // Discard
                   _CircleBtn(
                     icon: Icons.delete_outline_rounded,
                     color: AppColors.error.withValues(alpha: 0.12),
@@ -279,7 +258,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                     onTap: _discard,
                   ),
                   const SizedBox(width: 16),
-                  // Play/pause
                   _CircleBtn(
                     icon: _isPlaying
                         ? Icons.pause_rounded
@@ -291,7 +269,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                     onTap: _togglePlayback,
                   ),
                   const SizedBox(width: 16),
-                  // Save
                   _CircleBtn(
                     icon: Icons.check_rounded,
                     color: AppColors.success.withValues(alpha: 0.15),
@@ -300,7 +277,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                     loading: _saving,
                   ),
                 ] else ...[
-                  // Record / Stop
                   GestureDetector(
                     onTap: _isRecording ? _stopRecording : _startRecording,
                     child: AnimatedContainer(
@@ -322,7 +298,6 @@ class _VoiceRecorderScreenState extends State<VoiceRecorderScreen> {
                 ],
               ],
             ),
-
             const SizedBox(height: 48),
           ],
         ),
@@ -339,7 +314,6 @@ class _CircleBtn extends StatelessWidget {
   final double size;
   final double iconSize;
   final bool loading;
-
   const _CircleBtn({
     required this.icon,
     required this.color,
@@ -349,7 +323,6 @@ class _CircleBtn extends StatelessWidget {
     this.iconSize = 24,
     this.loading = false,
   });
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

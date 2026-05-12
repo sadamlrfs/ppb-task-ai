@@ -11,12 +11,10 @@ import 'thesis_detail_screen.dart';
 
 class ThesisListScreen extends StatelessWidget {
   const ThesisListScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final uid = context.read<AuthProvider>().user?.uid ?? '';
     final fs = FirestoreService();
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -69,9 +67,7 @@ class ThesisListScreen extends StatelessWidget {
 class _ThesisCard extends StatelessWidget {
   final ThesisModel thesis;
   final VoidCallback onTap;
-
   const _ThesisCard({required this.thesis, required this.onTap});
-
   Color get _statusColor {
     switch (thesis.status) {
       case 'completed':
@@ -146,8 +142,8 @@ class _ThesisCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               thesis.field,
-              style: const TextStyle(
-                  fontSize: 13, color: AppColors.textSecondary),
+              style:
+                  const TextStyle(fontSize: 13, color: AppColors.textSecondary),
             ),
             const SizedBox(height: 14),
             Row(
@@ -172,7 +168,6 @@ class _ThesisCard extends StatelessWidget {
 class _EmptyThesis extends StatelessWidget {
   final VoidCallback onAdd;
   const _EmptyThesis({required this.onAdd});
-
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -191,12 +186,10 @@ class _EmptyThesis extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           const Text('No theses yet',
-              style:
-                  TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
           const SizedBox(height: 6),
           const Text('Create your first thesis to get started',
-              style:
-                  TextStyle(fontSize: 13, color: AppColors.textSecondary)),
+              style: TextStyle(fontSize: 13, color: AppColors.textSecondary)),
           const SizedBox(height: 24),
           TextButton.icon(
             onPressed: onAdd,

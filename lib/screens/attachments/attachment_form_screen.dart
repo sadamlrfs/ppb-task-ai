@@ -12,13 +12,11 @@ import '../../widgets/custom_text_field.dart';
 class AttachmentFormScreen extends StatefulWidget {
   final String thesisId;
   final String? bimbinganId;
-
   const AttachmentFormScreen({
     super.key,
     required this.thesisId,
     this.bimbinganId,
   });
-
   @override
   State<AttachmentFormScreen> createState() => _AttachmentFormScreenState();
 }
@@ -29,7 +27,6 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
   final _titleCtrl = TextEditingController();
   String _kind = 'link';
   bool _loading = false;
-
   static const _kinds = [
     ('link', Icons.link_rounded, 'Link'),
     ('video', Icons.play_circle_outline_rounded, 'Video'),
@@ -37,7 +34,6 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
     ('audio', Icons.headphones_outlined, 'Audio'),
     ('doc', Icons.description_outlined, 'Document'),
   ];
-
   @override
   void dispose() {
     _urlCtrl.dispose();
@@ -110,8 +106,6 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-
-              // Info banner
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
@@ -126,17 +120,14 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
                     Expanded(
                       child: Text(
                         'Paste a link from Google Drive, YouTube, Dropbox or any URL — no file upload needed.',
-                        style: TextStyle(
-                            fontSize: 12, color: AppColors.primary),
+                        style:
+                            TextStyle(fontSize: 12, color: AppColors.primary),
                       ),
                     ),
                   ],
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // Kind selector
               const Text('Type',
                   style: TextStyle(
                     fontSize: 13,
@@ -157,9 +148,8 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 10),
                         decoration: BoxDecoration(
-                          color: selected
-                              ? AppColors.primary
-                              : AppColors.surface,
+                          color:
+                              selected ? AppColors.primary : AppColors.surface,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
@@ -185,9 +175,7 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
                   }).toList(),
                 ),
               ),
-
               const SizedBox(height: 16),
-
               CustomTextField(
                 label: 'URL',
                 hint: 'https://drive.google.com/…',
@@ -205,17 +193,13 @@ class _AttachmentFormScreenState extends State<AttachmentFormScreen> {
                   onPressed: _previewUrl,
                 ),
               ),
-
               const SizedBox(height: 16),
-
               CustomTextField(
                 label: 'Title (optional)',
                 hint: 'e.g. Chapter 2 Draft',
                 controller: _titleCtrl,
               ),
-
               const SizedBox(height: 32),
-
               AppButton(
                 label: 'Add Attachment',
                 loading: _loading,

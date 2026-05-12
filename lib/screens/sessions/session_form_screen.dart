@@ -12,13 +12,11 @@ import '../../widgets/custom_text_field.dart';
 class SessionFormScreen extends StatefulWidget {
   final String thesisId;
   final String thesisTitle;
-
   const SessionFormScreen({
     super.key,
     required this.thesisId,
     this.thesisTitle = '',
   });
-
   @override
   State<SessionFormScreen> createState() => _SessionFormScreenState();
 }
@@ -27,7 +25,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _summaryCtrl = TextEditingController();
   final _actionCtrl = TextEditingController();
-
   DateTime _scheduledAt = DateTime.now().add(const Duration(days: 1));
   int _durationMin = 60;
   double? _lat;
@@ -36,7 +33,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
   bool _fetchingLocation = false;
   bool _loading = false;
   final List<String> _actionItems = [];
-
   @override
   void dispose() {
     _summaryCtrl.dispose();
@@ -76,7 +72,8 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
       setState(() {
         _lat = pos.latitude;
         _lng = pos.longitude;
-        _locationLabel = LocationService.formatCoords(pos.latitude, pos.longitude);
+        _locationLabel =
+            LocationService.formatCoords(pos.latitude, pos.longitude);
       });
     } else if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -149,8 +146,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 8),
-
-              // Date & time
               _sectionLabel('Date & Time'),
               const SizedBox(height: 6),
               GestureDetector(
@@ -176,10 +171,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
-              // Duration
               _sectionLabel('Duration'),
               const SizedBox(height: 6),
               Wrap(
@@ -193,9 +185,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 10),
                       decoration: BoxDecoration(
-                        color: selected
-                            ? AppColors.primary
-                            : AppColors.surface,
+                        color: selected ? AppColors.primary : AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -212,10 +202,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                   );
                 }).toList(),
               ),
-
               const SizedBox(height: 16),
-
-              // GPS location
               _sectionLabel('Meeting Location (GPS)'),
               const SizedBox(height: 6),
               Container(
@@ -266,20 +253,14 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 16),
-
-              // Summary
               CustomTextField(
                 label: 'Session Summary (optional)',
                 hint: 'Key discussion points…',
                 controller: _summaryCtrl,
                 maxLines: 3,
               ),
-
               const SizedBox(height: 16),
-
-              // Action items
               _sectionLabel('Action Items'),
               const SizedBox(height: 6),
               Row(
@@ -297,8 +278,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                         ),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 14),
-                        hintStyle:
-                            const TextStyle(color: AppColors.textLight),
+                        hintStyle: const TextStyle(color: AppColors.textLight),
                       ),
                       onSubmitted: (_) => _addActionItem(),
                     ),
@@ -313,8 +293,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: const Icon(Icons.add_rounded,
-                          color: Colors.white),
+                      child: const Icon(Icons.add_rounded, color: Colors.white),
                     ),
                   ),
                 ],
@@ -327,7 +306,6 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
                           setState(() => _actionItems.removeAt(e.key)),
                     )),
               ],
-
               const SizedBox(height: 32),
               AppButton(
                 label: 'Schedule Session',
@@ -355,9 +333,7 @@ class _SessionFormScreenState extends State<SessionFormScreen> {
 class _ActionChip extends StatelessWidget {
   final String label;
   final VoidCallback onRemove;
-
   const _ActionChip({required this.label, required this.onRemove});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -372,9 +348,7 @@ class _ActionChip extends StatelessWidget {
           const Icon(Icons.check_circle_outline_rounded,
               size: 16, color: AppColors.primary),
           const SizedBox(width: 8),
-          Expanded(
-              child: Text(label,
-                  style: const TextStyle(fontSize: 13))),
+          Expanded(child: Text(label, style: const TextStyle(fontSize: 13))),
           GestureDetector(
             onTap: onRemove,
             child: const Icon(Icons.close_rounded,

@@ -8,8 +8,7 @@ class MilestoneModel {
   final DateTime dueDate;
   final DateTime? completedAt;
   final int order;
-  final String status; // 'pending' | 'in_progress' | 'completed'
-
+  final String status;
   const MilestoneModel({
     required this.id,
     required this.thesisId,
@@ -20,7 +19,6 @@ class MilestoneModel {
     required this.order,
     required this.status,
   });
-
   factory MilestoneModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return MilestoneModel(
@@ -34,17 +32,16 @@ class MilestoneModel {
       status: d['status'] ?? 'pending',
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'thesisId': thesisId,
         'title': title,
         'description': description,
         'dueDate': Timestamp.fromDate(dueDate),
-        'completedAt': completedAt != null ? Timestamp.fromDate(completedAt!) : null,
+        'completedAt':
+            completedAt != null ? Timestamp.fromDate(completedAt!) : null,
         'order': order,
         'status': status,
       };
-
   bool get isOverdue =>
       status != 'completed' && dueDate.isBefore(DateTime.now());
 }

@@ -10,14 +10,12 @@ import '../thesis/thesis_form_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final user = auth.user;
     final firstName = (user?.name ?? 'User').split(' ').first;
     final today = DateFormat('EEEE, d MMM').format(DateTime.now());
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
@@ -27,8 +25,6 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 24),
-
-              // ── Header ──────────────────────────────────────────────────
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -70,15 +66,14 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 28),
-
-              // ── Quick action cards ───────────────────────────────────────
               SectionHeader(
                 title: 'Quick Actions',
                 actionLabel: 'See All',
-                onAction: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (_) => const ThesisListScreen())),
+                onAction: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const ThesisListScreen())),
               ),
               const SizedBox(height: 14),
               GridView.count(
@@ -95,7 +90,8 @@ class HomeScreen extends StatelessWidget {
                     icon: Icons.menu_book_rounded,
                     backgroundColor: AppColors.lavender,
                     iconColor: AppColors.primary,
-                    onTap: () => Navigator.push(context,
+                    onTap: () => Navigator.push(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const ThesisListScreen())),
                   ),
@@ -107,7 +103,8 @@ class HomeScreen extends StatelessWidget {
                     iconColor: const Color(0xFF7A5500),
                     showBadge: true,
                     badgeText: 'New',
-                    onTap: () => Navigator.push(context,
+                    onTap: () => Navigator.push(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const ThesisListScreen())),
                   ),
@@ -117,7 +114,8 @@ class HomeScreen extends StatelessWidget {
                     icon: Icons.add_circle_outline_rounded,
                     backgroundColor: AppColors.dark,
                     iconColor: AppColors.surface,
-                    onTap: () => Navigator.push(context,
+                    onTap: () => Navigator.push(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const ThesisFormScreen())),
                   ),
@@ -127,16 +125,14 @@ class HomeScreen extends StatelessWidget {
                     icon: Icons.flag_rounded,
                     backgroundColor: AppColors.cardLight,
                     iconColor: AppColors.primary,
-                    onTap: () => Navigator.push(context,
+                    onTap: () => Navigator.push(
+                        context,
                         MaterialPageRoute(
                             builder: (_) => const ThesisListScreen())),
                   ),
                 ],
               ),
-
               const SizedBox(height: 28),
-
-              // ── Tips banner ─────────────────────────────────────────────
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(18),
@@ -165,9 +161,8 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(height: 4),
                           Text(
                             'Complete your milestones before the deadline.',
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.white70),
+                            style:
+                                TextStyle(fontSize: 12, color: Colors.white70),
                           ),
                         ],
                       ),
@@ -177,10 +172,7 @@ class HomeScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               const SizedBox(height: 28),
-
-              // ── Recent activity ─────────────────────────────────────────
               const SectionHeader(title: 'Recent Activity'),
               const SizedBox(height: 14),
               _ActivityItem(
@@ -206,7 +198,6 @@ class HomeScreen extends StatelessWidget {
                 title: 'Schedule a session',
                 subtitle: 'Meet your supervisor & track feedback',
               ),
-
               const SizedBox(height: 32),
             ],
           ),
@@ -251,13 +242,12 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               auth.user?.name ?? '',
-              style: const TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w700),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
             ),
             Text(
               auth.user?.email ?? '',
-              style: const TextStyle(
-                  color: AppColors.textSecondary, fontSize: 13),
+              style:
+                  const TextStyle(color: AppColors.textSecondary, fontSize: 13),
             ),
             const SizedBox(height: 6),
             Container(
@@ -299,7 +289,6 @@ class _ActivityItem extends StatelessWidget {
   final Color iconColor;
   final String title;
   final String subtitle;
-
   const _ActivityItem({
     required this.icon,
     required this.iconBg,
@@ -307,7 +296,6 @@ class _ActivityItem extends StatelessWidget {
     required this.title,
     required this.subtitle,
   });
-
   @override
   Widget build(BuildContext context) {
     return Container(

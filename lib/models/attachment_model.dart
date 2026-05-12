@@ -5,12 +5,11 @@ class AttachmentModel {
   final String ownerId;
   final String thesisId;
   final String? bimbinganId;
-  final String kind; // 'video' | 'image' | 'audio' | 'doc' | 'link'
+  final String kind;
   final String url;
   final String title;
   final String sourceHost;
   final DateTime addedAt;
-
   const AttachmentModel({
     required this.id,
     required this.ownerId,
@@ -22,7 +21,6 @@ class AttachmentModel {
     required this.sourceHost,
     required this.addedAt,
   });
-
   factory AttachmentModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return AttachmentModel(
@@ -37,7 +35,6 @@ class AttachmentModel {
       addedAt: (d['addedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'ownerId': ownerId,
         'thesisId': thesisId,
@@ -48,7 +45,6 @@ class AttachmentModel {
         'sourceHost': sourceHost,
         'addedAt': Timestamp.fromDate(addedAt),
       };
-
   static String hostFromUrl(String url) {
     try {
       return Uri.parse(url).host.replaceFirst('www.', '');

@@ -46,3 +46,8 @@ app.*.map.json
 
 # Secrets — JANGAN commit file ini
 lib/config/secrets.dart
+
+# ML Models
+model.bin
+*.bin
+*.tflite

@@ -8,15 +8,12 @@ class AppColors {
   static const Color primary = Color(0xFF7B61FF);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color cardLight = Color(0xFFEFEBFD);
-
   static const Color textPrimary = Color(0xFF1C1C1E);
   static const Color textSecondary = Color(0xFF8E8E93);
   static const Color textLight = Color(0xFFBDBDC7);
-
   static const Color success = Color(0xFF34C759);
   static const Color warning = Color(0xFFFF9500);
   static const Color error = Color(0xFFFF3B30);
-
   static const LinearGradient bgGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

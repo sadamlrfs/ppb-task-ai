@@ -15,7 +15,6 @@ import 'thesis_links_screen.dart';
 class BimbinganListScreen extends StatelessWidget {
   final ThesisModel thesis;
   const BimbinganListScreen({super.key, required this.thesis});
-
   void _showProfileSheet(BuildContext context, AuthProvider auth) {
     showModalBottomSheet(
       context: context,
@@ -113,7 +112,6 @@ class BimbinganListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
     final fs = FirestoreService();
-
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -153,11 +151,8 @@ class BimbinganListScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(22, 16, 22, 120),
         children: [
-          // ── Thesis Info Card ─────────────────────────────────────────────
           _ThesisInfoCard(thesis: thesis),
           const SizedBox(height: 14),
-
-          // ── Tautan Penting Card ──────────────────────────────────────────
           StreamBuilder<List<AttachmentModel>>(
             stream: fs.thesisLinksStream(thesis.id),
             builder: (context, snap) {
@@ -173,8 +168,6 @@ class BimbinganListScreen extends StatelessWidget {
             },
           ),
           const SizedBox(height: 20),
-
-          // ── Bimbingan List ───────────────────────────────────────────────
           const Text('Daftar Bimbingan',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
           const SizedBox(height: 12),
@@ -222,12 +215,9 @@ class BimbinganListScreen extends StatelessWidget {
   }
 }
 
-// ── Thesis Info Card ──────────────────────────────────────────────────────────
-
 class _ThesisInfoCard extends StatelessWidget {
   final ThesisModel thesis;
   const _ThesisInfoCard({required this.thesis});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -295,13 +285,10 @@ class _ThesisInfoCard extends StatelessWidget {
   }
 }
 
-// ── Quick Links Card ──────────────────────────────────────────────────────────
-
 class _QuickLinksCard extends StatelessWidget {
   final List<AttachmentModel> links;
   final VoidCallback onTap;
   const _QuickLinksCard({required this.links, required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -397,19 +384,15 @@ class _QuickLinksCard extends StatelessWidget {
   }
 }
 
-// ── Bimbingan Card ────────────────────────────────────────────────────────────
-
 class _BimbinganCard extends StatelessWidget {
   final BimbinganModel bimbingan;
   final VoidCallback onTap;
   const _BimbinganCard({required this.bimbingan, required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     final planPreview = bimbingan.plan.length > 80
         ? '${bimbingan.plan.substring(0, 80)}…'
         : bimbingan.plan;
-
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -422,7 +405,6 @@ class _BimbinganCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Date badge
             Container(
               width: 50,
               padding: const EdgeInsets.symmetric(vertical: 8),
@@ -497,12 +479,9 @@ class _BimbinganCard extends StatelessWidget {
   }
 }
 
-// ── Empty State ───────────────────────────────────────────────────────────────
-
 class _EmptyBimbingan extends StatelessWidget {
   final VoidCallback onTap;
   const _EmptyBimbingan({required this.onTap});
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

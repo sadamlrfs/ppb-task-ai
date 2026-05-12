@@ -8,10 +8,9 @@ class SessionModel {
   final double? latitude;
   final double? longitude;
   final String? locationLabel;
-  final String status; // 'scheduled' | 'done' | 'cancelled'
+  final String status;
   final String summary;
   final List<String> actionItems;
-
   const SessionModel({
     required this.id,
     required this.thesisId,
@@ -24,7 +23,6 @@ class SessionModel {
     required this.summary,
     required this.actionItems,
   });
-
   factory SessionModel.fromFirestore(DocumentSnapshot doc) {
     final d = doc.data() as Map<String, dynamic>;
     return SessionModel(
@@ -40,7 +38,6 @@ class SessionModel {
       actionItems: List<String>.from(d['actionItems'] ?? []),
     );
   }
-
   Map<String, dynamic> toFirestore() => {
         'thesisId': thesisId,
         'scheduledAt': Timestamp.fromDate(scheduledAt),
@@ -52,10 +49,9 @@ class SessionModel {
         'summary': summary,
         'actionItems': actionItems,
       };
-
   bool get hasLocation => latitude != null && longitude != null;
-
   String get locationDisplay => hasLocation
-      ? (locationLabel ?? '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}')
+      ? (locationLabel ??
+          '${latitude!.toStringAsFixed(4)}, ${longitude!.toStringAsFixed(4)}')
       : 'No location';
 }

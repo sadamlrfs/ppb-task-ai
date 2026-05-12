@@ -4,7 +4,6 @@ import 'package:timezone/data/latest.dart' as tz_data;
 
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
-
   static Future<void> init() async {
     tz_data.initializeTimeZones();
     const android = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -88,9 +87,9 @@ class NotificationService {
   }) async {
     final base = bimbinganId.hashCode.abs();
     final reminders = [
-      (base,          dateTime.subtract(const Duration(days: 1)),  '1 hari lagi'),
-      (base + 10000,  dateTime.subtract(const Duration(hours: 3)), '3 jam lagi'),
-      (base + 20000,  dateTime.subtract(const Duration(hours: 1)), '1 jam lagi'),
+      (base, dateTime.subtract(const Duration(days: 1)), '1 hari lagi'),
+      (base + 10000, dateTime.subtract(const Duration(hours: 3)), '3 jam lagi'),
+      (base + 20000, dateTime.subtract(const Duration(hours: 1)), '1 jam lagi'),
     ];
     for (final r in reminders) {
       if (r.$2.isBefore(DateTime.now())) continue;

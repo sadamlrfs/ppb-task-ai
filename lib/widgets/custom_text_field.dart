@@ -13,7 +13,6 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefixIcon;
   final bool readOnly;
   final VoidCallback? onTap;
-
   const CustomTextField({
     super.key,
     required this.label,
@@ -28,7 +27,6 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.onTap,
   });
-
   @override
   Widget build(BuildContext context) {
     return Column(

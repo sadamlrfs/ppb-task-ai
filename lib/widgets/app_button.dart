@@ -8,7 +8,6 @@ class AppButton extends StatelessWidget {
   final Color? backgroundColor;
   final Color? foregroundColor;
   final IconData? icon;
-
   const AppButton({
     super.key,
     required this.label,
@@ -18,7 +17,6 @@ class AppButton extends StatelessWidget {
     this.foregroundColor,
     this.icon,
   });
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -65,14 +63,12 @@ class AppOutlineButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final IconData? icon;
-
   const AppOutlineButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.icon,
   });
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(

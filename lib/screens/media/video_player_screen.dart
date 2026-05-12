@@ -6,7 +6,6 @@ import '../../core/theme/app_colors.dart';
 class VideoPlayerScreen extends StatefulWidget {
   final String url;
   const VideoPlayerScreen({super.key, required this.url});
-
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
@@ -16,7 +15,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
   ChewieController? _chewieController;
   bool _initialized = false;
   String? _error;
-
   @override
   void initState() {
     super.initState();
@@ -82,8 +80,8 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Text(
                       _error!,
-                      style: const TextStyle(
-                          color: Colors.white54, fontSize: 12),
+                      style:
+                          const TextStyle(color: Colors.white54, fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ),
